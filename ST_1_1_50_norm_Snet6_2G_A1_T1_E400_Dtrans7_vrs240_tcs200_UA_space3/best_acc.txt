@@ -1,0 +1,1 @@
+best epoch:399, acc is 80.968
