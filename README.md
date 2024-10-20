@@ -1,14 +1,15 @@
-# GradAug: A New Regularization Method for Deep Neural Networks (NeurIPS'20) [[arXiv]](https://arxiv.org/abs/2006.07989)
-This work proposes to utilize randomly transformed training samples to regularize a set of sub-networks. The motivation is that a well-generalized network, and its sub-networks, should recognize transformed images as the same object. The proposed method is simple, general yet effective. It achieves state-of-the-art performance on ImageNet and Cifar classification, and can further improve downstream tasks such as object detection and instance segmentation. The effectiveness is also validated on model robustness and low data regimes.
-# Install
-- Pytorch 1.0.0+, torchvision, Numpy, pyyaml
-- Follow the PyTorch [example](https://github.com/pytorch/examples/tree/master/imagenet) to prepare ImageNet dataset.
+# Stimulative training of residual networks: A social psychology perspective of loafing (NeurIPS'22) [[NIPS22]](https://proceedings.neurips.cc/paper_files/paper/2022/hash/1757af1fe1429801bdf3abf5600f8bba-Abstract-Conference.html)
+Abstract: Residual networks have shown great success and become indispensable in today’s deep models. In this work, we aim to re-investigate the training process of residual networks from a novel social psychology perspective of loafing, and further propose a new training strategy to strengthen the performance of residual networks. As residual networks can be viewed as ensembles of relatively shallow networks (i.e., unraveled view) in prior works, we also start from such view and consider that the final performance of a residual network is co-determined by a group of sub-networks. Inspired by the social loafing problem of social psychology, we find that residual networks invariably suffer from similar problem, where sub-networks in a residual network are prone to exert less effort when working as part of the group compared to working alone. We define this previously overlooked problem as network loafing. As social loafing will ultimately cause the low individual productivity and the reduced overall performance, network loafing will also hinder the performance of a given residual network and its sub-networks. Referring to the solutions of social psychology, we propose stimulative training, which randomly samples a residual sub-network and calculates the KL-divergence loss between the sampled sub-network and the given residual network, to act as extra supervision for sub-networks and make the overall goal consistent. Comprehensive empirical results and theoretical analyses verify that stimulative training can well handle the loafing problem, and improve the performance of a residual network by improving the performance of its sub-networks.
+
+# Stimulative training++: Go beyond the performance limits of residual networks [[arxiv]](https://arxiv.org/abs/2305.02507)
+Abstract: Residual networks have shown great success and become indispensable in recent deep neural network models. In this work, we aim to re-investigate the training process of residual networks from a novel perspective of loafing, and further propose a new training scheme as well as three improved strategies for boosting residual networks beyond their performance limits. Previous research has suggested that residual networks can be considered as ensembles of shallow networks, which implies that the final performance of a residual network is influenced by a group of subnetworks. Furthermore, we identify a previously overlooked problem, where subnetworks within a residual network are prone to exert less effort when working as part of a group compared to working alone. We define this problem as network loafing. Since network loafing may inevitably cause the sub-par performance of the residual network, we propose a novel training scheme called stimulative training, which randomly samples a residual subnetwork and calculates the KL divergence loss between the sampled subnetwork and the given residual network for extra supervision. In order to unleash the potential of stimulative training, we further propose three simple-yet-effective strategies, including a novel KL- loss that only aligns the network logits direction, random smaller inputs for subnetworks, and inter-stage sampling rules. Comprehensive experiments and analysis verify the effectiveness of stimulative training as well as its three improved strategies. For example, the proposed method can boost the performance of ResNet50 on ImageNet to 80.5% Top1 accuracy without using any extra data, model, trick, or changing the structure. With only uniform augment, the performance can be further improved to 81.0% Top1 accuracy, better than the best training recipes provided by Timm library and PyTorch official version. We also verify its superiority on various typical models, datasets, and tasks and give some theoretical analysis. As such, we advocate utilizing the proposed method as a general and next-generation technology to train residual networks.
+
 # Run
-1. ImageNet experiments are conducted on 8 GPUs.
+1. ImageNet experiments are conducted on 2 A100 80G GPUs.
 
 To train ResNet-50,
 ```
-python train.py app:configs/resnet50_randwidth.yml
+python train.py 
 ```
 To test a pre-trained model,
 
@@ -16,72 +17,28 @@ Modify `test_only: False` to `test_only: True` in .yml file to enable testing.
 
 Modify `pretrained: /PATH/TO/YOUR/WEIGHTS` to assign pre-trained weights.
 
-2. Cifar experiments are conducted on 2 GPUs. 
-
-To train WideResNet-28-10,
-```
-python train_cifar.py app:configs/wideresnet_randwidth.yml
-```
-To train PyramidNet-200,
-```
-python train_cifar.py app:configs/pyramidnet_randwidth.yml
-```
-
-3. Generate sub-networks by random depth.
-```
-python train_cifar.py app:configs/resnet_randdepth,yml
-```
 # Results
-1. ImageNet classification accuacy. Note that we report the final-epoch results.
+1. ImageNet classification accuacy. 
 
-|Model|FLOPs|Top-1|Top-5|
-|-----|-----|-----|-----|
-|ResNet-50|4.1 G|76.32|92.95|
-|+Dropblock|4.1 G|78.13|94.02|
-|+Mixup|4.1 G|77.9|93.9|
-|+CutMix|4.1 G|78.60|94.08|
-|+StochDepth|4.1 G|77.53|93.73|
-|+ShakeDrop|4.1 G|77.5|-|
-|+GradAug ([Model](https://drive.google.com/file/d/1_0aXi30ET4OrQY0j6KxTYXK0lkgo70Fh/view?usp=sharing))|4.1 G|**78.78**|**94.43**|
-|+bag of tricks|4.3 G|79.29|94.38|
-|+GradAug+CutMix ([Model](https://drive.google.com/file/d/1cmB3ZIK5-pWt2I37-Pf0I721xZq8MF_4/view?usp=sharing))|4.1 G|**79.67**|**94.93**|
 
-2. Cifar-100 classification accuracy. Note that we report the final-epoch results.
-
-|WideResNet-28-10|Top-1|Top-5|
-|----------------|-----|-----|
-|Baseline|81.53|95.59|
-|+Mixup|82.5|-|
-|+CutMix|84.08|96.28|
-|+ShakeDrop|81.65|96.19|
-|+GradAug ([Model](https://drive.google.com/file/d/1KgsNhBDMGwzg4ursr3Zi57ltuiYspM0b/view?usp=sharing))|83.98|96.17|
-|+GradAug+CutMix ([Model](https://drive.google.com/file/d/1Tkr7TLQtst8XnwqPixTXiwLHjN_LbYQQ/view?usp=sharing))|**85.35**|**96.85**|
-
-|PyramidNet-200|Top-1|Top-5|
-|--------------|-----|-----|
-|Baseline|83.49|94.31|
-|+Mixup|84.37|96.01|
-|+CutMix|84.83|96.73|
-|+ShakeDrop|84.57|97.08|
-|+GradAug ([Model](https://drive.google.com/file/d/1p_oXkhtdkvmS6fckgmkjV4NDsYegHnl3/view?usp=sharing))|85.53|97.04|
-|+GradAug+CutMix ([Model](https://drive.google.com/file/d/1MZXH1u3fVijPF_yj7VoskqjNPOXBscQq/view?usp=sharing))|**86.24**|**97.33**|
-
-3. Experiments of generating sub-networks by random depth.
-
-|ResNet-110|Cifar-10|Cifar-100|
-|----------|--------|---------|
-|Baseline|93.59|72.24|
-|+StochDepth|94.75|75.02|
-|+GradAug-Randdepth|**95.77** ([Model](https://drive.google.com/file/d/1YKrsqh6syTvnmS7Wdb_x4RBg1VQXnkB1/view?usp=sharing))|**77.63** ([Model](https://drive.google.com/file/d/1dMw7p2E_sthg3MN0XhURjvi3VZWWTK3h/view?usp=sharing))|
 
 # Citation
 If you find this useful in your work, please consider citing,
 ```
-@article{yang2020gradaug,
-  title={GradAug: A New Regularization Method for Deep Neural Networks},
-  author={Yang, Taojiannan and Zhu, Sijie and Chen, Chen},
-  journal={Advances in Neural Information Processing Systems},
-  volume={33},
-  year={2020}
+@article{ye2023stimulative,
+  title={Stimulative training++: Go beyond the performance limits of residual networks},
+  author={Ye, Peng and He, Tong and Tang, Shengji and Li, Baopu and Chen, Tao and Bai, Lei and Ouyang, Wanli},
+  journal={arXiv preprint arXiv:2305.02507},
+  year={2023}
 }
+
+@article{ye2022stimulative,
+  title={Stimulative training of residual networks: A social psychology perspective of loafing},
+  author={Ye, Peng and Tang, Shengji and Li, Baopu and Chen, Tao and Ouyang, Wanli},
+  journal={Advances in Neural Information Processing Systems},
+  volume={35},
+  pages={3596--3608},
+  year={2022}
+}
+
 ```
