@@ -60,7 +60,7 @@ parser.add_argument('--Dtrans', type=str, default='Dtrans7')
 parser.add_argument('--min_lr', action='store_true', default=False)
 parser.add_argument('--min_lr_coef', type=float, default=0.0001)
 # more tricks
-parser.add_argument('--val_resize_size', type=int, default=256)  # common: val_resize_256+val_crop_224
+parser.add_argument('--val_resize_size', type=int, default=256)  # common: val_resize_size 256 + val_crop_size 224
 parser.add_argument('--val_crop_size', type=int, default=224)
 parser.add_argument('--train_crop_size', type=int, default=224)
 parser.add_argument('--mini_size', type=float, default=0.43)  # int(args.train_crop_size*args.mini_size)=int(224*0.43)=96
@@ -728,7 +728,6 @@ def validate(val_loader, model, criterion, epoch):
         epoch, args.epoch, top1=top1, top5=top5, loss=losses))
     return top1.avg, top5.avg, losses.avg
 
-
 def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
     directory = args.exp
     if not os.path.exists(directory):
@@ -737,7 +736,6 @@ def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
     torch.save(state, filename)
     if is_best:
         shutil.copyfile(filename, directory + '/model_best.pth.tar')
-
 
 class AverageMeter(object):
     """Computes and stores the average and current value"""
@@ -757,7 +755,6 @@ class AverageMeter(object):
         self.count += n
         self.avg = self.sum / self.count
 
-
 def get_lr_scheduler(optimizer, trainloader, last_epoch=-1):
     if FLAGS.lr_scheduler == 'multistep':
         lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(
@@ -770,7 +767,6 @@ def get_lr_scheduler(optimizer, trainloader, last_epoch=-1):
     else:
         raise NotImplementedError('LR scheduler not implemented.')
     return lr_scheduler
-
 
 # note: sample depth-level sub-networks
 def sample(res_depth=50):
@@ -820,27 +816,12 @@ def sample(res_depth=50):
             depth_st.append(depth - np.random.choice(depth_candi_i, 1)[0])
     return depth_st
 
-# def adjust_learning_rate(optimizer, epoch):
-#     """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
-#     if args.dataset.startswith('cifar'):
-#         lr = args.lr * (0.1 ** (epoch // (args.epochs * 0.5))) * (0.1 ** (epoch // (args.epochs * 0.75)))
-#     elif args.dataset == ('imagenet'):
-#         if args.epochs == 300:
-#             lr = args.lr * (0.1 ** (epoch // 75))
-#         else:
-#             lr = args.lr * (0.1 ** (epoch // 30))
-#
-#     for param_group in optimizer.param_groups:
-#         param_group['lr'] = lr
-
-
 def get_learning_rate(optimizer):
     lr = []
     for param_group in optimizer.param_groups:
         lr += [param_group['lr']]
     # print(lr)
     return lr
-
 
 def accuracy(output, target, topk=(1,)):
     """Computes the precision@k for the specified values of k"""

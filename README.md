@@ -36,6 +36,12 @@ To train ResNet-50 with stimulative training + KD-(snet6) + random smaller input
 ```
 python train.py --exp 'ST_1_1_50_E200_2G_norm_Snet6_A1_T1_Dtrans7_vrs240_tcs200_space3' --epoch=200 --norm_kd --amplitude=1 --Temp=1 --multi_Snet=6 --Snet_Dtrans --Dtrans='Dtrans7' --val_resize_size=240 --train_crop_size=200 --sample_space='space3'
 ```
+
+To train ResNet-50 with stimulative training + KD-(snet6) + random smaller inputs for subnets + 
+```
+python train.py --exp 'ST_1_1_50_E400_2G_norm_Snet6_A1_T1_Dtrans7_vrs240_tcs200_space3_UA' --epoch=400 --norm_kd --amplitude=1 --Temp=1 --multi_Snet=6 --Snet_Dtrans --Dtrans='Dtrans7' --val_resize_size=240 --train_crop_size=200 --sample_space='space3' --train_trans='with_UA'
+```
+
 <!-- To test a pre-trained model,
 
 Modify `test_only: False` to `test_only: True` in .yml file to enable testing. 
