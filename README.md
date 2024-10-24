@@ -7,18 +7,44 @@ Abstract: Residual networks have shown great success and become indispensable in
 # Run
 1. ImageNet experiments are conducted on 2 A100 80G GPUs.
 
-To train ResNet-50,
+To train ResNet-50 with common training
 ```
-python train.py 
+python train.py --exp 'CT_1_0_50_E200_2G' --main_coef=1.0 --kl_coef=0 --epoch=200 
 ```
-To test a pre-trained model,
+
+To train ResNet-50 with stimulative training
+```
+python train.py --exp 'ST_1_1_50_E200_2G' --epoch=200 
+```
+
+To train ResNet-50 with stimulative training + KD-
+```
+python train.py --exp 'ST_1_1_50_E200_2G_norm_A1_T1' --epoch=200 --norm_kd --amplitude=1 --Temp=1 
+```
+
+To train ResNet-50 with stimulative training + KD-(snet5)  
+```
+python train.py --exp 'ST_1_1_50_E200_2G_norm_Snet5_A1_T1' --epoch=200 --norm_kd --multi_Snet=5 --amplitude=1 --Temp=1 
+```
+
+To train ResNet-50 with stimulative training + KD-(snet5) + random smaller inputs for subnets
+```
+python train.py --exp 'ST_1_1_50_E200_2G_norm_Snet5_A1_T1_Dtrans7' --epoch=200 --norm_kd --multi_Snet=5 --amplitude=1 --Temp=1 --Snet_Dtrans --Dtrans='Dtrans7'
+```
+
+To train ResNet-50 with stimulative training + KD-(snet5) + random smaller inputs for subnets
+```
+python train.py --exp 'ST_1_1_50_E200_2G_norm_Snet5_A1_T1_Dtrans7' --epoch=200 --norm_kd --multi_Snet=5 --amplitude=1 --Temp=1 --Snet_Dtrans --Dtrans='Dtrans7'
+```
+
+<!-- To test a pre-trained model,
 
 Modify `test_only: False` to `test_only: True` in .yml file to enable testing. 
 
-Modify `pretrained: /PATH/TO/YOUR/WEIGHTS` to assign pre-trained weights.
+Modify `pretrained: /PATH/TO/YOUR/WEIGHTS` to assign pre-trained weights. -->
 
-# Results
-1. ImageNet classification accuacy. 
+<!-- # Results
+1. ImageNet classification accuacy.  -->
 
 
 
