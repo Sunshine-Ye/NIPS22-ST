@@ -9,12 +9,12 @@ Abstract: Residual networks have shown great success and become indispensable in
 
 To train ResNet-50 with common training
 ```
-python train.py --exp 'CT_1_0_50_E200_2G' --main_coef=1.0 --kl_coef=0 --epoch=200 
+python train.py --exp 'CT_1_0_50_E200_2G' --epoch=200 --kl_coef=0
 ```
 
 To train ResNet-50 with stimulative training
 ```
-python train.py --exp 'ST_1_1_50_E200_2G' --epoch=200 
+python train.py --exp 'ST_1_1_50_E200_2G' --epoch=200
 ```
 
 To train ResNet-50 with stimulative training + KD-
@@ -22,21 +22,20 @@ To train ResNet-50 with stimulative training + KD-
 python train.py --exp 'ST_1_1_50_E200_2G_norm_A1_T1' --epoch=200 --norm_kd --amplitude=1 --Temp=1 
 ```
 
-To train ResNet-50 with stimulative training + KD-(snet5)  
+To train ResNet-50 with stimulative training + KD-(snet6)  
 ```
-python train.py --exp 'ST_1_1_50_E200_2G_norm_Snet5_A1_T1' --epoch=200 --norm_kd --multi_Snet=5 --amplitude=1 --Temp=1 
-```
-
-To train ResNet-50 with stimulative training + KD-(snet5) + random smaller inputs for subnets
-```
-python train.py --exp 'ST_1_1_50_E200_2G_norm_Snet5_A1_T1_Dtrans7' --epoch=200 --norm_kd --multi_Snet=5 --amplitude=1 --Temp=1 --Snet_Dtrans --Dtrans='Dtrans7'
+python train.py --exp 'ST_1_1_50_E200_2G_norm_Snet6_A1_T1' --epoch=200 --norm_kd --amplitude=1 --Temp=1 --multi_Snet=6
 ```
 
-To train ResNet-50 with stimulative training + KD-(snet5) + random smaller inputs for subnets
+To train ResNet-50 with stimulative training + KD-(snet6) + random smaller inputs for subnets
 ```
-python train.py --exp 'ST_1_1_50_E200_2G_norm_Snet5_A1_T1_Dtrans7' --epoch=200 --norm_kd --multi_Snet=5 --amplitude=1 --Temp=1 --Snet_Dtrans --Dtrans='Dtrans7'
+python train.py --exp 'ST_1_1_50_E200_2G_norm_Snet6_A1_T1_Dtrans7' --epoch=200 --norm_kd --amplitude=1 --Temp=1 --multi_Snet=6 --Snet_Dtrans --Dtrans='Dtrans7'
 ```
 
+To train ResNet-50 with stimulative training + KD-(snet6) + random smaller inputs for subnets + 
+```
+python train.py --exp 'ST_1_1_50_E200_2G_norm_Snet6_A1_T1_Dtrans7_vrs240_tcs200_space3' --epoch=200 --norm_kd --amplitude=1 --Temp=1 --multi_Snet=6 --Snet_Dtrans --Dtrans='Dtrans7' --val_resize_size=240 --train_crop_size=200 --sample_space='space3'
+```
 <!-- To test a pre-trained model,
 
 Modify `test_only: False` to `test_only: True` in .yml file to enable testing. 
